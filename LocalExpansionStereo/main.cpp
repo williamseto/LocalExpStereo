@@ -9,7 +9,9 @@
 #include "ArgsParser.h"
 #include "CostVolumeEnergy.h"
 #include "Utilities.hpp"
-#include <direct.h>
+//#include <direct.h>
+#include <unistd.h>
+#include <sys/stat.h>
 
 struct Options
 {
@@ -286,7 +288,7 @@ void MidV2(const std::string inputDir, const std::string outputDir, const Option
 	param.lambda = options.smooth_weight;
 
 	{
-		_mkdir((outputDir + "debug").c_str());
+		mkdir((outputDir + "debug").c_str(), ACCESSPERMS);
 
 		Evaluator *eval = new Evaluator(dispGT, nonocc, 255.0f / (maxdisp), "result", outputDir + "debug\\");
 		eval->setPrecision(calib.gt_prec);
@@ -375,7 +377,7 @@ void MidV3(const std::string inputDir, const std::string outputDir, const Option
 
 
 	{
-		_mkdir((outputDir + "debug").c_str());
+		mkdir((outputDir + "debug").c_str(), ACCESSPERMS);
 
 		Evaluator *eval = new Evaluator(dispGT, nonocc, 255.0f / (maxdisp), "result", outputDir + "debug\\");
 		eval->setPrecision(-1);
@@ -453,7 +455,7 @@ int main(int argc, const char** args)
 		omp_set_num_threads(options.threadNum);
 
 	if (options.outputDir.length())
-		_mkdir((options.outputDir).c_str());
+		mkdir((options.outputDir).c_str(), ACCESSPERMS);
 
 	printf("\n\n");
 

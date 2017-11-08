@@ -18,13 +18,13 @@ public:
 		std::vector<cv::Rect> unitRegions;
 		std::vector<cv::Rect> sharedRegions;
 		std::vector<cv::Rect> filterRegions;
-		std::vector<std::vector<int>> disjointRegionSets;
+		std::vector<std::vector<int> > disjointRegionSets;
 		//std::vector<std::unique_ptr<IProposer<float>>> proposers;
 		std::vector<IProposer*> proposers;
 	};
 	std::vector<Layer> layers;
 
-	LayerManager& LayerManager::operator=(const LayerManager& obj) {
+	LayerManager& operator=(const LayerManager& obj) {
 		this->layers = obj.layers;
 		return *this;
 	}

@@ -3,6 +3,8 @@
 #include <opencv2/core/core.hpp>
 #include <fstream>
 
+typedef int32_t __int32;
+
 namespace cvutils
 {
 	namespace io
@@ -22,8 +24,7 @@ namespace cvutils
 		{
 			int w, h;
 			char buf[256];
-			FILE *f;
-			fopen_s(&f, filename.c_str(), "rb");
+			FILE *f = fopen(filename.c_str(), "rb");
 			if (f == NULL)
 			{
 				//wprintf(L"PFM file absent: %s\n\n", filename.c_str());
@@ -86,8 +87,7 @@ namespace cvutils
 			int width = image.cols;
 			int height = image.rows;
 
-			FILE *stream;
-			fopen_s(&stream, filename.c_str(), "wb");
+			FILE *stream = fopen(filename.c_str(), "wb");
 			if (stream == NULL)
 			{
 				printf("PFM file absent: %s\n\n", filename.c_str());

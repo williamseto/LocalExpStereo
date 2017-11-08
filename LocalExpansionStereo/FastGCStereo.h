@@ -96,7 +96,7 @@ public:
 		cv::Mat currentCost = currentCost_[mode];
 		cv::Mat currentLabeling = currentLabeling_[mode];
 		cv::Mat currentLabeling_m = currentLabeling_m_[mode];
-
+		StereoEnergy::Reusable tempReusable;
 		if (labeling.empty())
 		{
 			currentCost = 0;
@@ -110,7 +110,7 @@ public:
 
 				const int R = params.windR;
 				cv::Rect filterRegion = cv::Rect(unit.x - R, unit.y - R, unit.width + R * 2, unit.height + R * 2) & imageDomain;
-				stereoEnergy->ComputeUnaryPotential(filterRegion, unit, currentCost(filterRegion), label, NaiveStereoEnergy::Reusable(), mode);
+				stereoEnergy->ComputeUnaryPotential(filterRegion, unit, currentCost(filterRegion), label, tempReusable, mode);
 			}
 		}
 		else // May start from a given labeling but this is very slow.
@@ -125,12 +125,12 @@ public:
 				cv::Rect unit(x, y, 1, 1);
 				cv::Rect filterRegion = cv::Rect(unit.x - R, unit.y - R, unit.width + R * 2, unit.height + R * 2) & imageDomain;
 
-				stereoEnergy->ComputeUnaryPotential(filterRegion, unit, currentCost(filterRegion), currentLabeling.at<Plane>(y, x), NaiveStereoEnergy::Reusable(), mode);
+				stereoEnergy->ComputeUnaryPotential(filterRegion, unit, currentCost(filterRegion), currentLabeling.at<Plane>(y, x), tempReusable, mode);
 			}
 		}
 	}
 
-	virtual void run(int maxIteration, const std::vector<int>& viewModes = {0, 1}, int pmInit = 0, cv::Mat& labeling = cv::Mat(), cv::Mat& rawlabeling = cv::Mat())
+	virtual void run(int maxIteration, const std::vector<int>& viewModes, int pmInit, cv::Mat& labeling, cv::Mat& rawlabeling)
 	{
 		for (int mode : viewModes)
 		{
